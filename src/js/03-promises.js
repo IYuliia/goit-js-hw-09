@@ -1,3 +1,5 @@
+import Notiflix from 'notiflix';
+
 const refs = {
   delay: document.querySelector('input[name="delay"]'),
   step: document.querySelector('input[name="step"]'),
@@ -25,7 +27,11 @@ refs.submitBtn.addEventListener('click', event => {
   const step = Number(refs.step.value);
   const amount = Number(refs.amount.value);
 
-  if (!firstDelay || !step || !amount) {
+  if (
+    refs.delay.value === '' ||
+    refs.step.value === '' ||
+    refs.amount.value === ''
+  ) {
     alert('Please fill in all the fields');
     return;
   }
@@ -35,10 +41,14 @@ refs.submitBtn.addEventListener('click', event => {
 
     createPromise(i, delay)
       .then(({ position, delay }) => {
-        console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        Notiflix.Notify.success(
+          `✅ Fulfilled promise ${position} in ${delay}ms`
+        );
       })
       .catch(({ position, delay }) => {
-        console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+        Notiflix.Notify.failure(
+          `❌ Rejected promise ${position} in ${delay}ms`
+        );
       });
   }
 });
